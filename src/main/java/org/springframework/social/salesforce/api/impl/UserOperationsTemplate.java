@@ -11,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
  * Default implementation of UserOperations.
  */
 public class UserOperationsTemplate extends AbstractSalesForceOperations<Salesforce> implements UserOperations {
-    private static final String USER_INFO_ENDPOINT = "https://login.salesforce.com/services/oauth2/userinfo";
 
     private RestTemplate restTemplate;
 
@@ -23,7 +22,7 @@ public class UserOperationsTemplate extends AbstractSalesForceOperations<Salesfo
     @Override
     public SalesforceUserDetails getSalesforceUserDetails() {
         requireAuthorization();
-        return restTemplate.exchange(USER_INFO_ENDPOINT, HttpMethod.GET, new HttpEntity<String>(""), SalesforceUserDetails.class, "v23.0").getBody();
+        return restTemplate.exchange(api.getUserInfoUrl(), HttpMethod.GET, new HttpEntity<>(""), SalesforceUserDetails.class, "v23.0").getBody();
     }
 
 }
