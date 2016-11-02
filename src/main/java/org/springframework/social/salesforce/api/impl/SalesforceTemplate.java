@@ -38,8 +38,10 @@ public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Sale
     private final Logger logger = LoggerFactory.getLogger(SalesforceTemplate.class);
 
     private static final String INSTANCE_URL = "https://na1.salesforce.com";
+    private static final String GATEWAY_URL  = "https://login.salesforce.com";
 
     private String instanceUrl;
+    private String gatewayUrl;
 
     private ObjectMapper objectMapper;
 
@@ -70,7 +72,6 @@ public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Sale
         initialize();
         logger.debug("ACCESS TOKEN: {}", accessToken);
     }
-
 
     @Override
     protected OAuth2Version getOAuth2Version()
@@ -176,6 +177,13 @@ public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Sale
         return userOperations;
     }
 
+    @Override
+    public UserOperations userOperations(String gatewayUrl)
+    {
+        this.gatewayUrl = gatewayUrl;
+        return userOperations;
+    }
+
 
     private void initialize()
     {
@@ -238,5 +246,20 @@ public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Sale
     public void setInstanceUrl(String instanceUrl) {
         this.instanceUrl = instanceUrl;
     }
+
+    @Override
+    public String getUserInfoUrl() {
+        return (this.gatewayUrl == null ? GATEWAY_URL : this.gatewayUrl) + "/services/oauth2/userinfo";
+    }
+
+    @Override
+    public String getAuthGatewayUrl() {
+        return this.gatewayUrl;
+    }
+
+    @Override
+    public void setAuthGatewayBaseUrl(String gatewayUrl) {
+        this.gatewayUrl = gatewayUrl;
+}
 
 }

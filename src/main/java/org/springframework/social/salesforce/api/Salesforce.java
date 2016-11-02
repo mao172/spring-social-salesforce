@@ -39,6 +39,8 @@ public interface Salesforce extends ApiBinding {
 
     public UserOperations userOperations();
 
+    public UserOperations userOperations(String gatewayUrl);
+
     public <T> List<T> readList(JsonNode jsonNode, Class<T> type);
 
     public <T> T readObject(JsonNode jsonNode, Class<T> type);
@@ -48,5 +50,11 @@ public interface Salesforce extends ApiBinding {
     public String getInstanceUrl();
 
     public void setInstanceUrl(String instanceUrl);
+
+    public String getUserInfoUrl();
+
+    public String getAuthGatewayUrl();
+
+    public void setAuthGatewayBaseUrl(String gatewayUrl);
 
 }
