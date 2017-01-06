@@ -2,15 +2,18 @@ package org.springframework.social.salesforce.api;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author Umut Utkan
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SalesforceProfile implements Serializable {
+    /**
+   *
+   */
+  private static final long serialVersionUID = -4875364772403869048L;
+
     protected String id;
 
     protected String email;
@@ -20,7 +23,7 @@ public class SalesforceProfile implements Serializable {
     protected String lastName;
 
     protected Photo photo;
-    
+
     protected String name;
 
 

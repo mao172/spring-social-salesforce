@@ -1,6 +1,12 @@
 package org.springframework.social.salesforce.api.impl;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,16 +21,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Default implementation of SObjectOperations.
- * 
+ *
  * @author Umut Utkan
  */
 public class SObjectsTemplate extends AbstractSalesForceOperations<Salesforce> implements SObjectOperations {
@@ -36,8 +37,9 @@ public class SObjectsTemplate extends AbstractSalesForceOperations<Salesforce> i
         this.restTemplate = restTemplate;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
-    public List<Map> getSObjects() {
+    public List<? extends Map> getSObjects() {
         requireAuthorization();
         JsonNode dataNode = restTemplate.getForObject(api.getBaseUrl() + "/{version}/sobjects", JsonNode.class, API_VERSION);
         return api.readList(dataNode.get("sobjects"), Map.class);
@@ -57,7 +59,7 @@ public class SObjectsTemplate extends AbstractSalesForceOperations<Salesforce> i
     }
 
     @Override
-    public Map getRow(String name, String id, String... fields) {
+    public Map<?, ?> getRow(String name, String id, String... fields) {
         requireAuthorization();
         URIBuilder builder = URIBuilder.fromUri(api.getBaseUrl() + "/" + API_VERSION + "/sobjects/" + name + "/" + id);
         if (fields.length > 0) {
@@ -79,22 +81,23 @@ public class SObjectsTemplate extends AbstractSalesForceOperations<Salesforce> i
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public Map<String, Object> create(String name, Map<String, Object> fields) {
         requireAuthorization();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Map> entity = new HttpEntity<Map>(fields, headers);
-        return restTemplate.postForObject(api.getBaseUrl() + "/{version}/sobjects/{name}", entity, Map.class, API_VERSION, name);
+        return (Map<String, Object>) restTemplate.postForObject(api.getBaseUrl() + "/{version}/sobjects/{name}", entity, Map.class, API_VERSION, name);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Map<String, Object> update(String sObjectName, String sObjectId, Map<String, Object> fields) {
         requireAuthorization();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Map<String, Object>> entity = new HttpEntity<Map<String,Object>>(fields, headers);
-        Map<String, Object> result =  restTemplate.postForObject(api.getBaseUrl() + "/{version}/sobjects/{sObjectName}/{sObjectId}?_HttpMethod=PATCH", 
+        Map<String, Object> result =  (Map<String, Object>) restTemplate.postForObject(api.getBaseUrl() + "/{version}/sobjects/{sObjectName}/{sObjectId}?_HttpMethod=PATCH",
                 entity, Map.class, API_VERSION, sObjectName, sObjectId);
         // SF returns an empty body on success, so mimic the same update you'd get from a create success for consistency
         if (result == null) {
@@ -105,14 +108,14 @@ public class SObjectsTemplate extends AbstractSalesForceOperations<Salesforce> i
         }
         return result;
     }
-    
-    
+
+
     @Override
     public void delete(String sObjectName, String sObjectId)
     {
         requireAuthorization();
         restTemplate.delete(api.getBaseUrl() + "/{version}/sobjects/{sObjectName}/{sObjectId}", API_VERSION, sObjectName, sObjectId);
     }
-    
+
 
 }

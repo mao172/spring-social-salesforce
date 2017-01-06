@@ -7,6 +7,11 @@ import java.io.Serializable;
  */
 public class ApiVersion implements Serializable {
 
+    /**
+   *
+   */
+  private static final long serialVersionUID = 4442013133901778319L;
+
     private String label;
 
     private String version;

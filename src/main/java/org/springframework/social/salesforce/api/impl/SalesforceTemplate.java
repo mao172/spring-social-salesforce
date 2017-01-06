@@ -1,9 +1,8 @@
 package org.springframework.social.salesforce.api.impl;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -18,18 +17,19 @@ import org.springframework.social.salesforce.api.RecentOperations;
 import org.springframework.social.salesforce.api.SObjectOperations;
 import org.springframework.social.salesforce.api.Salesforce;
 import org.springframework.social.salesforce.api.SearchOperations;
-import org.springframework.social.salesforce.api.SalesforceUserDetails;
 import org.springframework.social.salesforce.api.UserOperations;
 import org.springframework.social.salesforce.api.impl.json.SalesforceModule;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 /**
  * Default implementation of Salesforce. This is the main entry point for all
  * the operations that can be performed on Salesforce.
- * 
+ *
  * @author Umut Utkan
  * @author Jared Ottley
  */
@@ -172,7 +172,7 @@ public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Sale
     }
 
     @Override
-    public UserOperations userOperations() 
+    public UserOperations userOperations()
     {
         return userOperations;
     }
@@ -221,6 +221,7 @@ public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Sale
         restTemplate.setErrorHandler(new SalesforceErrorHandler());
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> List<T> readList(JsonNode jsonNode, Class<T> type) {
         CollectionType listType = TypeFactory.defaultInstance().constructCollectionType(List.class, type);

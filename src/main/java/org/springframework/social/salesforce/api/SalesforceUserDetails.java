@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SalesforceUserDetails extends SalesforceProfile {
+    /**
+   *
+   */
+  private static final long serialVersionUID = 6541567307214007923L;
+
     private String organizationId;
 
     private String nickname;

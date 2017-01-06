@@ -1,9 +1,9 @@
 package org.springframework.social.salesforce.api.impl;
 
-import org.junit.Test;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.social.salesforce.api.SObjectDetail;
-import org.springframework.social.salesforce.api.SObjectSummary;
+import static org.junit.Assert.*;
+import static org.springframework.http.HttpMethod.*;
+import static org.springframework.social.test.client.RequestMatchers.*;
+import static org.springframework.social.test.client.ResponseCreators.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,30 +12,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.social.test.client.RequestMatchers.method;
-import static org.springframework.social.test.client.RequestMatchers.requestTo;
-import static org.springframework.social.test.client.ResponseCreators.withResponse;
+import org.junit.Test;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.social.salesforce.api.SObjectDetail;
+import org.springframework.social.salesforce.api.SObjectSummary;
 
 /**
  * @author Umut Utkan
  */
 public class SObjectsTemplateTest extends AbstractSalesforceTest {
 
+    @SuppressWarnings("unchecked")
     @Test
     public void getSObjects() {
         mockServer.expect(requestTo("https://na7.salesforce.com/services/data/" + AbstractSalesForceOperations.API_VERSION + "/sobjects"))
                 .andExpect(method(GET))
                 .andRespond(withResponse(loadResource("sobjects.json"), responseHeaders));
-        List<Map> sobjects = salesforce.sObjectsOperations().getSObjects();
+        List<Map<String, ?>> sobjects = (List<Map<String, ?>>) salesforce.sObjectsOperations().getSObjects();
         assertEquals(160, sobjects.size());
         assertEquals("Account", sobjects.get(0).get("name"));
         assertEquals("Account", sobjects.get(0).get("label"));
         assertEquals("Accounts", sobjects.get(0).get("labelPlural"));
-        assertEquals("/services/data/v23.0/sobjects/Account", ((Map) sobjects.get(0).get("urls")).get("sobject"));
+        assertEquals("/services/data/v23.0/sobjects/Account", ((Map<String, Object>) sobjects.get(0).get("urls")).get("sobject"));
     }
 
     @Test
@@ -107,7 +105,7 @@ public class SObjectsTemplateTest extends AbstractSalesforceTest {
         Map<?, ?> result = salesforce.sObjectsOperations().update("Lead", "abc123", leadData);
         assertTrue(result.size() == 0);
     }
-    
+
     @Test
     public void testDelete() throws IOException {
         // salesforce returns an empty body with a success code if no failures.

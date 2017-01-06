@@ -9,17 +9,22 @@ import java.util.Map;
  */
 public class ResultItem implements Serializable {
 
+    /**
+   *
+   */
+  private static final long serialVersionUID = 2973927389127719383L;
+
     private String type;
 
     private String url;
 
-    private Map attributes;
+    private Map<String, Object> attributes;
 
 
     public ResultItem(String type, String url) {
         this.type = type;
         this.url = url;
-        this.attributes = new HashMap();
+        this.attributes = new HashMap<String, Object>();
     }
 
 
@@ -39,11 +44,11 @@ public class ResultItem implements Serializable {
         this.url = url;
     }
 
-    public Map getAttributes() {
+    public Map<String, Object> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(Map attributes) {
+    public void setAttributes(Map<String, Object> attributes) {
         this.attributes = attributes;
     }
 

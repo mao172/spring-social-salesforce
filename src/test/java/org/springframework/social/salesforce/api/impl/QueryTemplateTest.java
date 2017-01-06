@@ -1,17 +1,15 @@
 package org.springframework.social.salesforce.api.impl;
 
-import org.junit.Test;
-import org.springframework.social.salesforce.api.QueryResult;
-import org.springframework.social.salesforce.api.ResultItem;
+import static org.junit.Assert.*;
+import static org.springframework.http.HttpMethod.*;
+import static org.springframework.social.test.client.RequestMatchers.*;
+import static org.springframework.social.test.client.ResponseCreators.*;
 
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.social.test.client.RequestMatchers.method;
-import static org.springframework.social.test.client.RequestMatchers.requestTo;
-import static org.springframework.social.test.client.ResponseCreators.withResponse;
+import org.junit.Test;
+import org.springframework.social.salesforce.api.QueryResult;
+import org.springframework.social.salesforce.api.ResultItem;
 
 /**
  * @author Umut Utkan
@@ -31,7 +29,7 @@ public class QueryTemplateTest extends AbstractSalesforceTest {
         for (ResultItem item : result.getRecords()) {
             assertEquals("Account", item.getType());
         }
-        Map attrFirst = result.getRecords().get(0).getAttributes();
+        Map<String, Object> attrFirst = result.getRecords().get(0).getAttributes();
         assertEquals("001A000000df63xIAA", attrFirst.get("Id"));
         assertEquals("GenePoint", attrFirst.get("Name"));
         assertEquals("Mountain View", attrFirst.get("BillingCity"));

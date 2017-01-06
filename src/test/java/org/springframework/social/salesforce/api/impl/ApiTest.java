@@ -16,7 +16,7 @@ import org.springframework.social.salesforce.client.BaseSalesforceFactory;
 
 /**
  * This is a test that fully test the API over a real account.
- * 
+ *
  * @author Umut Utkan
  */
 @Ignore
@@ -99,11 +99,11 @@ public class ApiTest {
         }
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings("unchecked")
     public static void testSObjectsOperations(Salesforce api) {
         System.out.println("SObjects:");
 
-        for (Map sobject : api.sObjectsOperations().getSObjects()) {
+        for (Map<String, ?> sobject : api.sObjectsOperations().getSObjects()) {
 
             System.out.println(sobject);
 
@@ -120,7 +120,7 @@ public class ApiTest {
 
                         System.out.println(sobjectName + " : The id the of the first row is " + first.getAttributes().get("Id"));
 
-                        Map row = api.sObjectsOperations().getRow(first.getType(), (String) first.getAttributes().get("Id"));
+                        Map<?,?> row = api.sObjectsOperations().getRow(first.getType(), (String) first.getAttributes().get("Id"));
 
                         System.out.println(sobjectName + " : Printing the first row.");
                         System.out.println(sobjectName + " : " + row);

@@ -11,20 +11,21 @@ import java.util.Map;
  */
 public interface SObjectOperations {
 
-    public List<Map> getSObjects();
+    @SuppressWarnings("rawtypes")
+    public List<? extends Map> getSObjects();
 
     public SObjectSummary getSObjectSummary(String name);
 
     public SObjectDetail describeSObject(String name);
 
-    public Map getRow(String name, String id, String... fields);
+    public Map<?, ?> getRow(String name, String id, String... fields);
 
     public InputStream getBlob(String name, String id, String field);
 
     Map<String, ?> create(String name, Map<String, Object> fields);
-    
+
     Map<String,?> update(String sObjectName, String sObjectId, Map<String, Object> fields);
-    
+
     public void delete(String sObjectName, String sObjectId);
 
 }

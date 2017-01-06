@@ -1,8 +1,5 @@
 package org.springframework.social.salesforce.api.impl.json;
 
-import com.fasterxml.jackson.core.Version;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.social.salesforce.api.ApiVersion;
 import org.springframework.social.salesforce.api.Field;
 import org.springframework.social.salesforce.api.Photo;
@@ -14,8 +11,12 @@ import org.springframework.social.salesforce.api.ResultItem;
 import org.springframework.social.salesforce.api.SObjectDetail;
 import org.springframework.social.salesforce.api.SObjectSummary;
 import org.springframework.social.salesforce.api.SalesforceProfile;
-import org.springframework.social.salesforce.api.Status;
 import org.springframework.social.salesforce.api.SalesforceUserDetails;
+import org.springframework.social.salesforce.api.Status;
+
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 
 /**
@@ -26,8 +27,15 @@ import org.springframework.social.salesforce.api.SalesforceUserDetails;
 public class SalesforceModule extends SimpleModule
 {
 
+    /**
+   *
+   */
+  private static final long serialVersionUID = -6302215037613564709L;
+    private static final String GROUP_ID = "org.springframework.social";
+    private static final String ARTIFACT_ID = "spring-social-salesforce";
+
     public SalesforceModule() {
-        super("SalesforceModule", new Version(23, 0, 0, null));
+        super("SalesforceModule", new Version(23, 0, 0, null,GROUP_ID, ARTIFACT_ID));
     }
 
     @Override
